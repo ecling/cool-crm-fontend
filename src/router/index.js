@@ -142,6 +142,49 @@ export const constantRouterMap = [
     ]
   },
 
+  {
+    path: '/category',
+    component: Layout,
+    name: '分类管理',
+    meta: { title: '分类管理', icon: 'example' },
+    children: [
+      {
+        path: 'syscate',
+        name: '系统分类',
+        component: () => import('@/views/category/syscate/index'),
+        meta: { title: '系统分类', icon: 'form' }
+      },
+      {
+        path: 'sitecate',
+        name: '站点分类',
+        component: () => import('@/views/category/sitecate/index'),
+        meta: { title: '站点分类', icon: 'form' }
+      },
+    ]
+  },
+
+  {
+    path: '/product',
+    component: Layout,
+    name: '产品管理',
+    meta: { title: '产品管理', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: '产品列表',
+        component: () => import('@/views/product/list/index'),
+        meta: { title: '产品列表', icon: 'form' }
+      },
+      {
+        path: 'edit',
+        name: '产品增加/编辑',
+        component: () => import('@/views/product/edit/index'),
+        meta: { title: '产品增加', icon: 'form' },
+        hidden: true
+      }
+    ]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 
