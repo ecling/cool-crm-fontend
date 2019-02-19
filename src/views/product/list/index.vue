@@ -64,13 +64,13 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" v-if='dialogFormVisible' width="60%">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 700px; margin-left:50px;">
-        <el-form-item label="状态">
+        <!--<el-form-item label="状态">
           <el-switch
             v-model="temp.status"
             active-color="#13ce66"
             inactive-color="#ff4949">
           </el-switch>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="编码" prop="sku">
           <el-input v-model="temp.sku"/>
         </el-form-item>
@@ -117,7 +117,7 @@
         </el-form-item>
         <el-form-item label="主图片" prop="main_image" ref="main_image">
           <el-upload
-            action="http://localhost:8001/api/V1/product/image"
+            action="http://localhost:8000/api/V1/product/image"
             :headers="myheader"
             :file-list="temp.main_image"
             list-type="picture-card"
@@ -129,7 +129,7 @@
         </el-form-item>
         <el-form-item label="附加图片" prop="addition_images" ref="addition_images">
           <el-upload
-            action="http://localhost:8001/api/V1/product/image"
+            action="http://localhost:8000/api/V1/product/image"
             :headers="myheader"
             :file-list="temp.addition_images"
             list-type="picture-card"
@@ -287,22 +287,12 @@ export default {
       this.isDisabled = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-        const el = this.$refs.addition_images.$el.querySelectorAll('.el-upload-list')[0];
-        console.log(el);
+        const el = this.$refs.addition_images.$el.querySelectorAll('.el-upload-list')[0]
         this.sortable = Sortable.create(el,{
           onEnd: evt => {
-            //this.temp = Object.assign({}, row.addition_images)
-            //console.log(typeof(this.temp.addition_images))
-            //console.log(this.temp.addition_images);
-            //this.temp.addition_images = ['a','b'];
-            //const test = JSON.parse(JSON.stringify(this.temp.addition_images));
-            //const targetRow = test.splice(evt.oldIndex, 1)[0];
-            //test.splice(evt.newIndex, 0, targetRow)
-            const test = [{'name':'2019/01/23/5c4834a7db54d.jpg','url':'http://localhost:8001/media/catalog/product/2019/01/23/5c4834a7db54d.jpg'},{'name:':'2019/01/23/5c4834a8218b3.jpg','url':'http://localhost:8001/media/catalog/product/2019/01/23/5c4834a8218b3.jpg'}];
-            this.temp.addition_images = JSON.parse(JSON.stringify(test));
-            
-            //console.log(test);
-            //this.temp.addition_images = test;
+            this.temp.addition_images_new = JSON.parse(JSON.stringify(this.temp.addition_images))
+            const targetRow = this.temp.addition_images_new.splice(evt.oldIndex, 1)[0]
+            this.temp.addition_images_new.splice(evt.newIndex, 0, targetRow)
           }
         });
       })
@@ -331,6 +321,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.isDisabled = true
+          if(this.temp.addition_images_new==null){
+
+          }else{
+            this.temp.addition_images = this.temp.addition_images_new
+            this.temp.addition_images_new = null
+          }
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateProduct(tempData).then(() => {
