@@ -6,6 +6,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">创建</el-button>
     </div>  
     <el-table
+      ref="test"
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
@@ -154,6 +155,7 @@ import Tinymce from '@/components/Tinymce'
 import { getList,fetchList, fetchPv, createProduct, updateProduct, getOptions, getCategorys, getWebsite } from '@/api/product'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { getToken } from '@/utils/auth'
+import Sortable from 'sortablejs'
 
 var token = 'Bearer '+getToken();
 
@@ -274,6 +276,7 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+        console.log(this.$refs.addition_images.$el);
       })
     },
     handleUpdate(row) {
@@ -284,6 +287,24 @@ export default {
       this.isDisabled = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+        const el = this.$refs.addition_images.$el.querySelectorAll('.el-upload-list')[0];
+        console.log(el);
+        this.sortable = Sortable.create(el,{
+          onEnd: evt => {
+            //this.temp = Object.assign({}, row.addition_images)
+            //console.log(typeof(this.temp.addition_images))
+            //console.log(this.temp.addition_images);
+            //this.temp.addition_images = ['a','b'];
+            //const test = JSON.parse(JSON.stringify(this.temp.addition_images));
+            //const targetRow = test.splice(evt.oldIndex, 1)[0];
+            //test.splice(evt.newIndex, 0, targetRow)
+            const test = [{'name':'2019/01/23/5c4834a7db54d.jpg','url':'http://localhost:8001/media/catalog/product/2019/01/23/5c4834a7db54d.jpg'},{'name:':'2019/01/23/5c4834a8218b3.jpg','url':'http://localhost:8001/media/catalog/product/2019/01/23/5c4834a8218b3.jpg'}];
+            this.temp.addition_images = JSON.parse(JSON.stringify(test));
+            
+            //console.log(test);
+            //this.temp.addition_images = test;
+          }
+        });
       })
     },
     createData() {
