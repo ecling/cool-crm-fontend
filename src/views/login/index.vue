@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">vue-admin-template</h3>
+      <h3 class="title">编辑系统</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -30,7 +30,7 @@
       </el-form-item>
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <span> password: xxxx</span>
       </div>
     </el-form>
   </div>
@@ -50,7 +50,7 @@ export default {
       }
     }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 4) {
+      if (value.length < 5) {
         callback(new Error('密码不能小于5位'))
       } else {
         callback()
@@ -58,8 +58,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'johndoe',
-        password: 'test'
+        username: 'admin',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
