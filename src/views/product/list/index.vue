@@ -117,7 +117,7 @@
         </el-form-item>
         <el-form-item label="主图片" prop="main_image" ref="main_image">
           <el-upload
-            action="http://localhost:8000/api/V1/product/image"
+            :action="uploadUrl()"
             :headers="myheader"
             :file-list="temp.main_image"
             list-type="picture-card"
@@ -129,7 +129,7 @@
         </el-form-item>
         <el-form-item label="附加图片" prop="addition_images" ref="addition_images">
           <el-upload
-            action="http://localhost:8000/api/V1/product/image"
+            :action="uploadUrl()"
             :headers="myheader"
             :file-list="temp.addition_images"
             list-type="picture-card"
@@ -347,6 +347,10 @@ export default {
           })
         }
       })
+    },
+    uploadUrl(){
+      var url = process.env.BASE_API + "/product/image";
+      return url;
     },
     handleMainImageRemove(file, fileList) {
       this.temp.main_image =fileList

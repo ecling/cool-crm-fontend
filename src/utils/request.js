@@ -56,7 +56,15 @@ service.interceptors.response.use(
       }
       return Promise.reject('error')
     } else {
-      return response.data
+      if(res.code==4000){
+        Message({
+          message: res.message,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      }else{
+        return response.data
+      }
     }
   },
   error => {
