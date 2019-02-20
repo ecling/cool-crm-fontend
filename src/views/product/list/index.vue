@@ -4,6 +4,7 @@
       <el-input placeholder="sku" v-model="listQuery.title" style="width: 200px;" class="filter-item" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">创建</el-button>
+      <upload-excel-component :on-success="handleImportSuccess" :before-upload="beforeImportUpload"/>
     </div>  
     <el-table
       ref="test"
@@ -152,15 +153,16 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import { getList,fetchList, fetchPv, createProduct, updateProduct, getOptions, getCategorys, getWebsite } from '@/api/product'
+import { getList,fetchList, fetchPv, createProduct, updateProduct, importProduct, getOptions, getCategorys, getWebsite } from '@/api/product'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { getToken } from '@/utils/auth'
 import Sortable from 'sortablejs'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 var token = 'Bearer '+getToken();
 
 export default {
-  components: { Pagination, Tinymce },
+  components: { Pagination, Tinymce, UploadExcelComponent },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -237,6 +239,7 @@ export default {
       this.listLoading = true
       getList(this.listQuery).then(response => {
         this.list = response.data.items
+        this.total = response.data.total
         this.listLoading = false
       })
       
@@ -366,6 +369,35 @@ export default {
       this.temp.addition_images = fileList
       this.$refs.addition_images.clearValidate()
     },
+    beforeImportUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1
+      if (isLt1M) {
+        return true
+      }
+      this.$message({
+        message: 'Please do not upload files larger than 1m in size.',
+        type: 'warning'
+      })
+      return false
+    },
+    handleImportSuccess({ results, header }) {
+      importProduct(results).then(()=>{
+        this.$notify({
+          title: '成功',
+          message: '导入成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
+
+      getList(this.listQuery).then(response => {
+        this.list = response.data.items
+        this.listLoading = false
+      })
+      //this.tableData = results
+      //this.tableHeader = header
+      
+    }
   }
 }
 </script>

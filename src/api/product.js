@@ -40,6 +40,14 @@ export function updateProduct(params) {
   })
 }
 
+export function importProduct(params) {
+  return request({
+    url: '/product/import',
+    method: 'post',
+    data: params
+  })
+}
+
 export function getOptions(params) {
   return request({
     url: '/product/options',

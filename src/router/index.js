@@ -181,7 +181,13 @@ export const constantRouterMap = [
         component: () => import('@/views/product/edit/index'),
         meta: { title: '产品增加', icon: 'form' },
         hidden: true
-      }
+      },
+      {
+        path: 'option',
+        name: '产品属性',
+        component: () => import('@/views/product/option/index'),
+        meta: { title: '产品属性', icon: 'form' }
+      },
     ]
   },
 
