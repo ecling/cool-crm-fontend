@@ -14,44 +14,60 @@
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID" width="50">
         <template slot-scope="scope">
           {{ scope.row.product_id }}
         </template>
       </el-table-column>
-      <el-table-column label="Sku">
+      <el-table-column label="Sku" width="100">
         <template slot-scope="scope">
           {{ scope.row.sku }}
         </template>
       </el-table-column>
-      <el-table-column label="Name" width="320">
+      <el-table-column label="Name">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Purchase Price" width="110" align="center">
+      <el-table-column label="Purchase Price" width="80" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.purchase_price }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Shipping Cost" width="110" align="center">
+      <el-table-column label="Shipping Cost" width="80" align="center">
         <template slot-scope="scope">
           {{ scope.row.shipping_cost }}
         </template>
       </el-table-column>
-      <el-table-column label="Weight" width="110" align="center">
+      <el-table-column label="Weight" width="50" align="center">
         <template slot-scope="scope">
           {{ scope.row.weight }}
         </template>
       </el-table-column>
-      <el-table-column label="Qty" width="110" align="center">
+      <el-table-column label="Qty" width="50" align="center">
         <template slot-scope="scope">
           {{ scope.row.qty }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column label="Website" width="80" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-dropdown trigger="hover">
+            <span class="el-dropdown-link">
+              查看<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-for="website in scope.row.websites_status" :key="website.name" class="clearfix">
+                {{ website.name }} 
+                <el-badge class="mark" :value="website.status" type="primary" />
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
+      </el-table-column>
+      <el-table-column class-name="status-col" label="Status" width="80" align="center">
+        <template slot-scope="scope">
+          <!--<el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>-->
+          {{ scope.row.status | statusFilter }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
@@ -166,9 +182,10 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+        1: '正常',
+        2: '禁用',
+        3: '待翻译',
+        4: '待完善'
       }
       return statusMap[status]
     }
