@@ -110,11 +110,11 @@
         </el-form-item>
 
         <el-form-item label="分类" prop="category_ids">
-          <el-cascader :options="categorys" v-model="temp.category_ids"></el-cascader>
+          <el-cascader expand-trigger="hover" :options="categorys" v-model="temp.category_ids"></el-cascader>
         </el-form-item>
 
         <el-form-item label="分类2" prop="category2_ids">
-          <el-cascader :options="categorys" v-model="temp.category2_ids"></el-cascader>
+          <el-cascader expand-trigger="hover" :options="categorys" v-model="temp.category2_ids"></el-cascader>
         </el-form-item>
         <el-form-item label="主图片" prop="main_image" ref="main_image">
           <el-upload
@@ -137,7 +137,7 @@
             :on-remove="handleAdditionImagesRemove"
             :on-success="handleAdditionImagesSuccess"
             multiple
-            :limit="5">
+            >
             <i class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
@@ -205,13 +205,13 @@ export default {
         qty: [{ required: true } ],
         name: [{ required: true } ],
         description: [{ required: true } ],
-        color: [{ required: true } ],
+        //color: [{ required: true } ],
         size: [{ required: true } ],
-        main_image: [{ required: true } ],
+        //main_image: [{ required: true } ],
         addition_images: [{ required: true } ],
         category_ids: [{ required: true } ],
-        category2_ids: [{ required: true } ],
-        website_ids: [{ required: true } ],
+        //category2_ids: [{ required: true } ],
+        //website_ids: [{ required: true } ],
         //name: [{ required: true, message: 'name is required', trigger: 'blur' }]
       },
       statusOptions: ['published', 'draft', 'deleted'],
