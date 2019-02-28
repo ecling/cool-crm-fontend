@@ -130,7 +130,7 @@
         </el-form-item>
 
         <el-form-item label="分类2" prop="category2_ids">
-          <el-cascader expand-trigger="hover" :options="categorys" v-model="temp.category2_ids"></el-cascader>
+          <el-cascader expand-trigger="hover" clearable="true" :options="categorys" v-model="temp.category2_ids"></el-cascader>
         </el-form-item>
         <el-form-item label="主图片" prop="main_image" ref="main_image">
           <el-upload
@@ -196,16 +196,13 @@ export default {
       listLoading: true,
       total: 0,
       temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published',
+        qty: 9999,
+        category2_ids:[],
+        main_image:[],
+        addition_images:[],
         size:[],
         color: [],
-        website_ids: [],
+        website_ids: ['1','2','3','4','5'],
       },
       dialogFormVisible: false,
       dialogStatus: '',
