@@ -130,7 +130,7 @@
         </el-form-item>
 
         <el-form-item label="分类2" prop="category2_ids">
-          <el-cascader expand-trigger="hover" clearable="true" :options="categorys" v-model="temp.category2_ids"></el-cascader>
+          <el-cascader expand-trigger="hover" clearable :options="categorys" v-model="temp.category2_ids"></el-cascader>
         </el-form-item>
         <el-form-item label="主图片" prop="main_image" ref="main_image">
           <el-upload
@@ -287,13 +287,28 @@ export default {
       this.getList()
     },
     handleCreate() {
-      //this.temp = {};
+      this.temp = {
+        qty: 9999,
+        category2_ids:[],
+        main_image:[],
+        addition_images:[],
+        size:[],
+        color: [],
+        website_ids: ['1','2','3','4','5'],
+      }
       this.dialogStatus = 'create'
       this.isDisabled = false
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-        console.log(this.$refs.addition_images.$el);
+        const el = this.$refs.addition_images.$el.querySelectorAll('.el-upload-list')[0]
+        this.sortable = Sortable.create(el,{
+          onEnd: evt => {
+            this.temp.addition_images_new = JSON.parse(JSON.stringify(this.temp.addition_images))
+            const targetRow = this.temp.addition_images_new.splice(evt.oldIndex, 1)[0]
+            this.temp.addition_images_new.splice(evt.newIndex, 0, targetRow)
+          }
+        });
       })
     },
     handleUpdate(row) {
@@ -318,6 +333,12 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.isDisabled = true
+          if(this.temp.addition_images_new==null){
+
+          }else{
+            this.temp.addition_images = this.temp.addition_images_new
+            this.temp.addition_images_new = null
+          }
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           this.temp.author = 'vue-element-admin'
           createProduct(this.temp).then(response => {
@@ -362,6 +383,7 @@ export default {
               duration: 2000
             })
           })
+          
         }
       })
     },
