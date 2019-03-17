@@ -304,7 +304,9 @@ export default {
         const el = this.$refs.addition_images.$el.querySelectorAll('.el-upload-list')[0]
         this.sortable = Sortable.create(el,{
           onEnd: evt => {
-            this.temp.addition_images_new = JSON.parse(JSON.stringify(this.temp.addition_images))
+            if(this.temp.addition_images_new==null){
+              this.temp.addition_images_new = JSON.parse(JSON.stringify(this.temp.addition_images))
+            }
             const targetRow = this.temp.addition_images_new.splice(evt.oldIndex, 1)[0]
             this.temp.addition_images_new.splice(evt.newIndex, 0, targetRow)
           }
@@ -322,9 +324,12 @@ export default {
         const el = this.$refs.addition_images.$el.querySelectorAll('.el-upload-list')[0]
         this.sortable = Sortable.create(el,{
           onEnd: evt => {
-            this.temp.addition_images_new = JSON.parse(JSON.stringify(this.temp.addition_images))
+            if(this.temp.addition_images_new==null){
+              this.temp.addition_images_new = JSON.parse(JSON.stringify(this.temp.addition_images))
+            }
             const targetRow = this.temp.addition_images_new.splice(evt.oldIndex, 1)[0]
             this.temp.addition_images_new.splice(evt.newIndex, 0, targetRow)
+            console.log(this.temp.addition_images_new)
           }
         });
       })
